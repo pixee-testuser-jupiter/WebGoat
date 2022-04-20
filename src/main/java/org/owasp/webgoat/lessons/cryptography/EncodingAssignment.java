@@ -49,7 +49,7 @@ public class EncodingAssignment extends AssignmentEndpoint {
 		String basicAuth = (String) request.getSession().getAttribute("basicAuth");
 		String username = request.getUserPrincipal().getName();
 		if (basicAuth == null) {
-			String password = HashingAssignment.SECRETS[new Random().nextInt(HashingAssignment.SECRETS.length)];
+			String password = HashingAssignment.SECRETS[new java.security.SecureRandom().nextInt(HashingAssignment.SECRETS.length)];
 			basicAuth = getBasicAuth(username, password);
 			request.getSession().setAttribute("basicAuth", basicAuth);
 		}
