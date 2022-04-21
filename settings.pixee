@@ -4,3 +4,4 @@ rules:
   default: enabled
   exceptions:
     - pixee:java/xstream-harden-converter
+    - pixee:java/secure-random
