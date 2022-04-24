@@ -664,9 +664,18 @@
     <repositories>
         <repository>
             <id>central</id>
-            <url>https://repo.maven.apache.org/maven2</url>
+            <name>pixee-libs-release</name>
+            <url>https://pixee.jfrog.io/artifactory/mailman</url>
             <snapshots>
                 <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <name>pixee-libs-snapshot</name>
+            <url>https://pixee.jfrog.io/artifactory/mailman</url>
+            <snapshots>
+                <enabled>true</enabled>
             </snapshots>
         </repository>
     </repositories>
