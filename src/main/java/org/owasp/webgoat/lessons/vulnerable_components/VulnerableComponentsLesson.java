@@ -40,6 +40,20 @@ public class VulnerableComponentsLesson extends AssignmentEndpoint {
     public @ResponseBody
     AttackResult completed(@RequestParam String payload) {
         XStream xstream = new XStream();
+        xstream.registerConverter(new com.thoughtworks.xstream.converters.Converter() {
+            
+            public boolean canConvert(final Class type) {
+                return type != null && (type == java.beans.EventHandler.class || type == java.lang.ProcessBuilder.class || java.lang.reflect.Proxy.isProxyClass(type));
+            }
+
+            public Object unmarshal(final com.thoughtworks.xstream.io.HierarchicalStreamReader reader, final com.thoughtworks.xstream.converters.UnmarshallingContext context) {
+                throw new SecurityException("unsupported type due to security reasons");
+            }
+
+            public void marshal(final Object source, final com.thoughtworks.xstream.io.HierarchicalStreamWriter writer, final com.thoughtworks.xstream.converters.MarshallingContext context) {
+                throw new SecurityException("unsupported type due to security reasons");
+            }
+        }, XStream.PRIORITY_LOW);
         xstream.setClassLoader(Contact.class.getClassLoader());
         xstream.alias("contact", ContactImpl.class);
         xstream.ignoreUnknownElements();
