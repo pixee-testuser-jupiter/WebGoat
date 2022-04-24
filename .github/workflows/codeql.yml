@@ -47,6 +47,12 @@ jobs:
         distribution: 'temurin'
         java-version: 17
         architecture: x64
+    - name: "Setting up Artifactory authentication"
+      uses: s4u/maven-settings-action@v2
+      with:
+        servers: '[{"id": "central", "username": "${env.ARTIFACTORY_USER}", "password": "${env.ARTIFACTORY_TOKEN}"}]'
+        githubServer: false
+
     - name: Cache Maven packages
       uses: actions/cache@v3.0.2
       with:
@@ -66,6 +72,9 @@ jobs:
         languages: ${{ matrix.language }}
         config-file: ./.github/codeql/codeql-config.yml
     - name: Build with Maven
+      env:
+        ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
+        ARTIFACTORY_TOKEN: ${{ secrets.ARTIFACTORY_TOKEN }}
       run: mvn --no-transfer-progress package
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
