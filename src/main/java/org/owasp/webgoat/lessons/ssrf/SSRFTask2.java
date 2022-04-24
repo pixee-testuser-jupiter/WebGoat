@@ -50,7 +50,7 @@ public class SSRFTask2 extends AssignmentEndpoint {
     protected AttackResult furBall(String url) {
         if (url.matches("http://ifconfig.pro")) {
             String html;
-            try (InputStream in = new URL(url).openStream()) {
+            try (InputStream in = io.pixee.security.SSRF.createSafeURL(url, io.pixee.security.SSRF.HTTP_PROTOCOLS, io.pixee.security.HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).openStream()) {
                 html = new String(in.readAllBytes(), StandardCharsets.UTF_8)
                         .replaceAll("\n","<br>"); // Otherwise the \n gets escaped in the response
             } catch (MalformedURLException e) {
