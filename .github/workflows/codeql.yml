@@ -64,7 +64,7 @@ jobs:
       uses: github/codeql-action/init@v1
       with:
         languages: ${{ matrix.language }}
-        config-file: .github/codeql/codeql-config.yml
+        config-file: ./.github/codeql/codeql-config.yml
     - name: Build with Maven
       run: mvn --no-transfer-progress package
     - name: Perform CodeQL Analysis
