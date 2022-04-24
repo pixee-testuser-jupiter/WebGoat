@@ -3,5 +3,5 @@ name: "WebGoat CodeQL config"
 paths:
   - src 
 paths-ignore: 
-  - src/
-  - '**/*.test.js'
+  - src/main
+  - '**/*.js'
