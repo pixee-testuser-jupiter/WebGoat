@@ -53,6 +53,14 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2-
+      - name: Test Maven settings in PR
+        run: mvn help:effective-settings
+
+      - name: "Setting up Artifactory authentication"
+        uses: s4u/maven-settings-action@v2.6.0
+        with:
+          servers: '[{"id": "central", "username": "${env.ARTIFACTORY_USER}", "password": "${env.ARTIFACTORY_TOKEN}"}]'
+          githubServer: false
       - name: Build with Maven
         env:
           ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
@@ -76,6 +84,15 @@ jobs:
           with:
               path: ~/.m2
               key: ubuntu-latest-m2-${{ hashFiles('**/pom.xml') }}
-              restore-keys: ubuntu-latest-m2-
+                restore-keys: ubuntu-latest-m2-
+
+        - name: Test Maven settings in Build
+          run: mvn help:effective-settings
+
+        - name: "Setting up Artifactory authentication"
+          uses: s4u/maven-settings-action@v2.6.0
+          with:
+            servers: '[{"id": "central", "username": "${env.ARTIFACTORY_USER}", "password": "${env.ARTIFACTORY_TOKEN}"}]'
+            githubServer: false
         - name: Test with Maven
           run: mvn --no-transfer-progress verify
