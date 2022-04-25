@@ -57,10 +57,10 @@ jobs:
         env:
           ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
           ARTIFACTORY_TOKEN: ${{ secrets.ARTIFACTORY_TOKEN }}
-        run: mvn --no-transfer-progress package
+        run: mvn -X package
 
   build:
-    if: github.repository == 'WebGoat/WebGoat' && github.event_name == 'push'
+    if: github.repository == 'pixee-testuser-jupiter/WebGoat' && github.event_name == 'push'
     runs-on: ubuntu-latest
     name: "Branch build"
     steps:
@@ -77,5 +77,10 @@ jobs:
               path: ~/.m2
               key: ubuntu-latest-m2-${{ hashFiles('**/pom.xml') }}
               restore-keys: ubuntu-latest-m2-
+        - name: "Setting up Artifactory authentication"
+          uses: s4u/maven-settings-action@v2
+          with:
+            servers: '[{"id": "central", "username": "${env.ARTIFACTORY_USER}", "password": "${env.ARTIFACTORY_TOKEN}"}]'
+            githubServer: false
         - name: Test with Maven
-          run: mvn --no-transfer-progress verify
+          run: mvn -X verify
