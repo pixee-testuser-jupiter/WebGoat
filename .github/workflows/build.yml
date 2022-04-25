@@ -53,6 +53,8 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2-
+      - name: Test Maven settings in PR
+        run: mvn help:effective-settings
       - name: Build with Maven
         env:
           ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
@@ -77,6 +79,8 @@ jobs:
               path: ~/.m2
               key: ubuntu-latest-m2-${{ hashFiles('**/pom.xml') }}
               restore-keys: ubuntu-latest-m2-
+        - name: Test Maven settings
+          run: mvn help:effective-settings
         - name: "Setting up Artifactory authentication"
           uses: s4u/maven-settings-action@v2
           with:
