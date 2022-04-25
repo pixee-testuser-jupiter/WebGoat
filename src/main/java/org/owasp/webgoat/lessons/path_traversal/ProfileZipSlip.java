@@ -34,7 +34,7 @@ public class ProfileZipSlip extends ProfileUploadBase {
     @PostMapping(value = "/PathTraversal/zip-slip", consumes = ALL_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     public AttackResult uploadFileHandler(@RequestParam("uploadedFileZipSlip") MultipartFile file) {
-        if (!file.getOriginalFilename().toLowerCase().endsWith(".zip")) {
+        if (!io.pixee.security.SafeIO.toSimpleFileName(file.getOriginalFilename()).toLowerCase().endsWith(".zip")) {
             return failed(this).feedback("path-traversal-zip-slip.no-zip").build();
         } else {
             return processZipUpload(file);
@@ -50,7 +50,7 @@ public class ProfileZipSlip extends ProfileUploadBase {
         Files.createDirectories(uploadDirectory.toPath());
 
         try {
-            var uploadedZipFile = tmpZipDirectory.resolve(file.getOriginalFilename());
+            var uploadedZipFile = tmpZipDirectory.resolve(io.pixee.security.SafeIO.toSimpleFileName(file.getOriginalFilename()));
             FileCopyUtils.copy(file.getBytes(), uploadedZipFile.toFile());
 
             ZipFile zip = new ZipFile(uploadedZipFile.toFile());
