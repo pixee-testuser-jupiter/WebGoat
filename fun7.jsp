@@ -1,0 +1,3 @@
+sdfsdf
+
+<%= request.getParameter("foo") %>
