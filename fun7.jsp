@@ -1,3 +1,3 @@
 sdfsdf
 
-<%= request.getParameter("foo") %>
+<%=io.pixee.security.XSS.htmlEncode( request.getParameter("foo") )%>
