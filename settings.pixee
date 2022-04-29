@@ -1,0 +1,6 @@
+# pixee configuration!
+version: 1
+rules:
+  default: enabled
+  exceptions:
+    - pixee:java/secure-random
