@@ -146,7 +146,8 @@
         <xml-resolver.version>1.2</xml-resolver.version>
         <xstream.version>1.4.5</xstream.version> <!-- do not update necessary for lesson -->
         <zxcvbn.version>1.5.2</zxcvbn.version>
-    </properties>
+  <versions.java-security-toolkit>1.2.0</versions.java-security-toolkit>
+ </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -241,7 +242,12 @@
                 <artifactId>webdrivermanager</artifactId>
                 <version>${webdriver.version}</version>
             </dependency>
-        </dependencies>
+   <dependency>
+    <groupId>io.github.pixee</groupId>
+    <artifactId>java-security-toolkit</artifactId>
+    <version>${versions.java-security-toolkit}</version>
+   </dependency>
+  </dependencies>
     </dependencyManagement>
 
     <profiles>
@@ -531,7 +537,11 @@
             <artifactId>webdrivermanager</artifactId>
             <scope>test</scope>
         </dependency>
-    </dependencies>
+  <dependency>
+   <groupId>io.github.pixee</groupId>
+   <artifactId>java-security-toolkit</artifactId>
+  </dependency>
+ </dependencies>
 
     <build>
         <plugins>

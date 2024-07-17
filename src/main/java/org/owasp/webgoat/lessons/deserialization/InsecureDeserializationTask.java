@@ -22,6 +22,7 @@
 
 package org.owasp.webgoat.lessons.deserialization;
 
+import io.github.pixee.security.ObjectInputFilters;
 import org.dummy.insecure.framework.VulnerableTaskHolder;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AssignmentHints;
@@ -52,6 +53,7 @@ public class InsecureDeserializationTask extends AssignmentEndpoint {
         b64token = token.replace('-', '+').replace('_', '/');
 
         try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(Base64.getDecoder().decode(b64token)))) {
+            ObjectInputFilters.enableObjectFilterIfUnprotected(ois);
             before = System.currentTimeMillis();
             Object o = ois.readObject();
             if (!(o instanceof VulnerableTaskHolder)) {
