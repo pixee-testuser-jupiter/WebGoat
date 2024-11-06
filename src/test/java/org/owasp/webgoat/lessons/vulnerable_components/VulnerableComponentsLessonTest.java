@@ -24,6 +24,7 @@ package org.owasp.webgoat.lessons.vulnerable_components;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.StreamException;
+import io.github.pixee.security.xstream.HardeningConverter;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +51,8 @@ public class VulnerableComponentsLessonTest {
     @Test
     public void testTransformation() throws Exception {
     	XStream xstream = new XStream();
-        xstream.setClassLoader(Contact.class.getClassLoader());
+     xstream.registerConverter(new HardeningConverter());
+     xstream.setClassLoader(Contact.class.getClassLoader());
         xstream.alias("contact", ContactImpl.class);
         xstream.ignoreUnknownElements();
         assertNotNull(xstream.fromXML(contact));
@@ -60,7 +62,8 @@ public class VulnerableComponentsLessonTest {
     @Disabled
     public void testIllegalTransformation() throws Exception {
     	XStream xstream = new XStream();
-        xstream.setClassLoader(Contact.class.getClassLoader());
+     xstream.registerConverter(new HardeningConverter());
+     xstream.setClassLoader(Contact.class.getClassLoader());
         xstream.alias("contact", ContactImpl.class);
         xstream.ignoreUnknownElements();
         Exception e = assertThrows(RuntimeException.class, ()->((Contact)xstream.fromXML(strangeContact)).getFirstName());
@@ -70,7 +73,8 @@ public class VulnerableComponentsLessonTest {
     @Test
     public void testIllegalPayload() throws Exception {
     	XStream xstream = new XStream();
-        xstream.setClassLoader(Contact.class.getClassLoader());
+     xstream.registerConverter(new HardeningConverter());
+     xstream.setClassLoader(Contact.class.getClassLoader());
         xstream.alias("contact", ContactImpl.class);
         xstream.ignoreUnknownElements();
         Exception e = assertThrows(StreamException.class, ()->((Contact)xstream.fromXML("bullssjfs")).getFirstName());

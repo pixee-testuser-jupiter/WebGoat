@@ -23,6 +23,7 @@
 package org.owasp.webgoat.lessons.vulnerable_components;
 
 import com.thoughtworks.xstream.XStream;
+import io.github.pixee.security.xstream.HardeningConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AssignmentHints;
@@ -40,6 +41,7 @@ public class VulnerableComponentsLesson extends AssignmentEndpoint {
     public @ResponseBody
     AttackResult completed(@RequestParam String payload) {
         XStream xstream = new XStream();
+        xstream.registerConverter(new HardeningConverter());
         xstream.setClassLoader(Contact.class.getClassLoader());
         xstream.alias("contact", ContactImpl.class);
         xstream.ignoreUnknownElements();
