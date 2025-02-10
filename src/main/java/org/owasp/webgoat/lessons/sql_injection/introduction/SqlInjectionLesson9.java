@@ -23,6 +23,7 @@
 
 package org.owasp.webgoat.lessons.sql_injection.introduction;
 
+import java.sql.PreparedStatement;
 import org.owasp.webgoat.container.LessonDataSource;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AssignmentHints;
@@ -58,13 +59,14 @@ public class SqlInjectionLesson9 extends AssignmentEndpoint {
 
     protected AttackResult injectableQueryIntegrity(String name, String auth_tan) {
         StringBuffer output = new StringBuffer();
-        String query = "SELECT * FROM employees WHERE last_name = '" + name + "' AND auth_tan = '" + auth_tan + "'";
+        String query = "SELECT * FROM employees WHERE last_name = ? AND auth_tan = ?";
         try (Connection connection = dataSource.getConnection()) {
             try {
-                Statement statement = connection.createStatement(TYPE_SCROLL_SENSITIVE, CONCUR_UPDATABLE);
+                PreparedStatement statement = connection.prepareStatement(query, TYPE_SCROLL_SENSITIVE, CONCUR_UPDATABLE);
                 SqlInjectionLesson8.log(connection, query);
-                ResultSet results = statement.executeQuery(query);
-                var test = results.getRow() != 0;
+                statement.setString(1, name);
+                statement.setString(2, auth_tan);
+                ResultSet results = statement.execute();
                 if (results.getStatement() != null) {
                     if (results.first()) {
                         output.append(SqlInjectionLesson8.generateTable(results));
